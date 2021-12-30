@@ -1,0 +1,32 @@
+{
+    "name": "offset/packs",
+    "type": "package",
+    "description": "Create Offset packs",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jérôme Wohlschlegel",
+            "email": "jerome.wohlschlegel@gmail.com"
+        }
+    ],
+    "keywords": [
+        "wordpress",
+        "gutenberg",
+        "offset",
+        "block"
+    ],
+    "homepage": "https://github.com/offsetwp/packs",
+    "support": {
+        "issues": "https://github.com/offsetwp/packs/issues",
+        "source": "https://github.com/offsetwp/packs",
+        "docs": "https://github.com/offsetwp/packs"
+    },
+    "autoload": {
+        "psr-4": {
+            "Offset\\": "lib/"
+        }
+    },
+    "require": {
+        "php": ">=7.0"
+    }
+}
