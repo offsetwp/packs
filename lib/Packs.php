@@ -151,6 +151,16 @@ class Packs
      */
     public function hookActionWPEnqueueScripts()
     {
+        $packs = array_map(function ($pack) {
+            return $pack->name ?? '';
+        }, $this->packs);
+
+        $is_style_enqueue_all_packs = (bool) apply_filters('offset_packs_is_styles_enqueue', true);
+        $is_script_enqueue_all_packs = (bool) apply_filters('offset_packs_is_scripts_enqueue', true);
+
+        $packs_styles = (array) apply_filters('offset_packs_styles', $packs);
+        $packs_scripts = (array) apply_filters('offset_packs_scripts', $packs);
+
         $styles = array();
         $scripts = array();
 
@@ -176,7 +186,7 @@ class Packs
             }
 
             foreach ($pack->styles as $style) {
-                if (!is_array($style)) {
+                if (!is_array($style) || !$is_style_enqueue_all_packs || !in_array($pack->name, $packs_styles)) {
                     continue;
                 }
 
@@ -184,13 +194,16 @@ class Packs
             }
 
             foreach ($pack->scripts as $script) {
-                if (!is_array($script)) {
+                if (!is_array($script) || !$is_script_enqueue_all_packs || !in_array($pack->name, $packs_scripts)) {
                     continue;
                 }
 
                 $scripts[] = array_merge($script_default, $script);
             }
         }
+
+        $styles = (array) apply_filters('offset_packs_styles_enqueued', $styles);
+        $scripts = (array) apply_filters('offset_packs_scripts_enqueued', $scripts);
 
         foreach ($styles as $style) {
             wp_enqueue_style($style['handle'], $style['src'], $style['deps'], $style['ver'], $style['media']);
